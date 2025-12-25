@@ -1,0 +1,37 @@
+{
+  "name": "j1l",
+  "version": "0.1.0",
+  "description": "",
+  "main": "dist/node.cjs",
+  "module": "dist/node.js",
+  "browser": "dist/browser.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "browser": {
+        "import": "./dist/browser.js",
+        "require": "./dist/browser.iife.js"
+      },
+      "node": {
+        "import": "./dist/node.js",
+        "require": "./dist/node.cjs"
+      },
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc && node esbuild.config.js",
+    "build:tsc": "tsc",
+    "build:esbuild": "node esbuild.config.js",
+    "clean": "rm -rf dist",
+    "rebuild": "npm run clean && npm run build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "esbuild": "0.27.2",
+    "typescript": "5.9.3"
+  }
+}
