@@ -1,0 +1,1430 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`tokenizer > should tokenize annotations 1`] = `
+[
+  {
+    "kind": "Whitespace",
+    "value": {
+      "end": 7,
+      "start": 0,
+      "text": "
+      ",
+    },
+  },
+  {
+    "kind": "LessThan",
+    "value": {
+      "end": 8,
+      "start": 7,
+      "text": "<",
+    },
+  },
+  {
+    "kind": "TagName",
+    "value": {
+      "end": 17,
+      "start": 8,
+      "text": "cmp:Modal",
+    },
+  },
+  {
+    "kind": "Whitespace",
+    "value": {
+      "end": 18,
+      "start": 17,
+      "text": " ",
+    },
+  },
+  {
+    "kind": "AttributeName",
+    "value": {
+      "end": 28,
+      "start": 18,
+      "text": "bind:title",
+    },
+  },
+  {
+    "kind": "Equal",
+    "value": {
+      "end": 29,
+      "start": 28,
+      "text": "=",
+    },
+  },
+  {
+    "kind": "Quote",
+    "value": {
+      "end": 30,
+      "start": 29,
+      "text": """,
+    },
+  },
+  {
+    "kind": "StringLiteral",
+    "value": {
+      "end": 38,
+      "start": 30,
+      "text": "Greeting",
+    },
+  },
+  {
+    "kind": "Quote",
+    "value": {
+      "end": 39,
+      "start": 38,
+      "text": """,
+    },
+  },
+  {
+    "kind": "Slash",
+    "value": {
+      "end": 40,
+      "start": 39,
+      "text": "/",
+    },
+  },
+  {
+    "kind": "GreaterThan",
+    "value": {
+      "end": 41,
+      "start": 40,
+      "text": ">",
+    },
+  },
+  {
+    "kind": "Whitespace",
+    "value": {
+      "end": 46,
+      "start": 41,
+      "text": "
+    ",
+    },
+  },
+  {
+    "kind": "EOF",
+    "value": {
+      "end": 46,
+      "start": 46,
+      "text": "",
+    },
+  },
+]
+`;
+
+exports[`tokenizer > should tokenize attributes 1`] = `
+[
+  {
+    "kind": "LessThan",
+    "value": {
+      "end": 1,
+      "start": 0,
+      "text": "<",
+    },
+  },
+  {
+    "kind": "TagName",
+    "value": {
+      "end": 7,
+      "start": 1,
+      "text": "Button",
+    },
+  },
+  {
+    "kind": "Whitespace",
+    "value": {
+      "end": 8,
+      "start": 7,
+      "text": " ",
+    },
+  },
+  {
+    "kind": "AttributeName",
+    "value": {
+      "end": 12,
+      "start": 8,
+      "text": "name",
+    },
+  },
+  {
+    "kind": "Equal",
+    "value": {
+      "end": 13,
+      "start": 12,
+      "text": "=",
+    },
+  },
+  {
+    "kind": "Quote",
+    "value": {
+      "end": 14,
+      "start": 13,
+      "text": """,
+    },
+  },
+  {
+    "kind": "StringLiteral",
+    "value": {
+      "end": 23,
+      "start": 14,
+      "text": "btnSubmit",
+    },
+  },
+  {
+    "kind": "Quote",
+    "value": {
+      "end": 24,
+      "start": 23,
+      "text": """,
+    },
+  },
+  {
+    "kind": "Whitespace",
+    "value": {
+      "end": 25,
+      "start": 24,
+      "text": " ",
+    },
+  },
+  {
+    "kind": "AttributeName",
+    "value": {
+      "end": 30,
+      "start": 25,
+      "text": "class",
+    },
+  },
+  {
+    "kind": "Equal",
+    "value": {
+      "end": 31,
+      "start": 30,
+      "text": "=",
+    },
+  },
+  {
+    "kind": "Quote",
+    "value": {
+      "end": 32,
+      "start": 31,
+      "text": """,
+    },
+  },
+  {
+    "kind": "StringLiteral",
+    "value": {
+      "end": 52,
+      "start": 32,
+      "text": "btn-primary btn-wide",
+    },
+  },
+  {
+    "kind": "Quote",
+    "value": {
+      "end": 53,
+      "start": 52,
+      "text": """,
+    },
+  },
+  {
+    "kind": "Whitespace",
+    "value": {
+      "end": 54,
+      "start": 53,
+      "text": " ",
+    },
+  },
+  {
+    "kind": "Slash",
+    "value": {
+      "end": 55,
+      "start": 54,
+      "text": "/",
+    },
+  },
+  {
+    "kind": "GreaterThan",
+    "value": {
+      "end": 56,
+      "start": 55,
+      "text": ">",
+    },
+  },
+  {
+    "kind": "EOF",
+    "value": {
+      "end": 56,
+      "start": 56,
+      "text": "",
+    },
+  },
+]
+`;
+
+exports[`tokenizer > should tokenize boolean attribute without value 1`] = `
+[
+  {
+    "kind": "LessThan",
+    "value": {
+      "end": 1,
+      "start": 0,
+      "text": "<",
+    },
+  },
+  {
+    "kind": "TagName",
+    "value": {
+      "end": 10,
+      "start": 1,
+      "text": "TextField",
+    },
+  },
+  {
+    "kind": "Whitespace",
+    "value": {
+      "end": 11,
+      "start": 10,
+      "text": " ",
+    },
+  },
+  {
+    "kind": "AttributeName",
+    "value": {
+      "end": 19,
+      "start": 11,
+      "text": "disabled",
+    },
+  },
+  {
+    "kind": "Whitespace",
+    "value": {
+      "end": 20,
+      "start": 19,
+      "text": " ",
+    },
+  },
+  {
+    "kind": "Slash",
+    "value": {
+      "end": 21,
+      "start": 20,
+      "text": "/",
+    },
+  },
+  {
+    "kind": "GreaterThan",
+    "value": {
+      "end": 22,
+      "start": 21,
+      "text": ">",
+    },
+  },
+  {
+    "kind": "EOF",
+    "value": {
+      "end": 22,
+      "start": 22,
+      "text": "",
+    },
+  },
+]
+`;
+
+exports[`tokenizer > should tokenize inner text 1`] = `
+[
+  {
+    "kind": "LessThan",
+    "value": {
+      "end": 1,
+      "start": 0,
+      "text": "<",
+    },
+  },
+  {
+    "kind": "TagName",
+    "value": {
+      "end": 5,
+      "start": 1,
+      "text": "Page",
+    },
+  },
+  {
+    "kind": "GreaterThan",
+    "value": {
+      "end": 6,
+      "start": 5,
+      "text": ">",
+    },
+  },
+  {
+    "kind": "Text",
+    "value": {
+      "end": 19,
+      "start": 6,
+      "text": "Hello, world!",
+    },
+  },
+  {
+    "kind": "LessThan",
+    "value": {
+      "end": 20,
+      "start": 19,
+      "text": "<",
+    },
+  },
+  {
+    "kind": "Slash",
+    "value": {
+      "end": 21,
+      "start": 20,
+      "text": "/",
+    },
+  },
+  {
+    "kind": "GreaterThan",
+    "value": {
+      "end": 22,
+      "start": 21,
+      "text": ">",
+    },
+  },
+  {
+    "kind": "EOF",
+    "value": {
+      "end": 22,
+      "start": 22,
+      "text": "",
+    },
+  },
+]
+`;
+
+exports[`tokenizer > should tokenize interpolation with "Hello world" value 1`] = `
+[
+  {
+    "kind": "LessThan",
+    "value": {
+      "end": 1,
+      "start": 0,
+      "text": "<",
+    },
+  },
+  {
+    "kind": "TagName",
+    "value": {
+      "end": 8,
+      "start": 1,
+      "text": "SomeTag",
+    },
+  },
+  {
+    "kind": "Whitespace",
+    "value": {
+      "end": 9,
+      "start": 8,
+      "text": " ",
+    },
+  },
+  {
+    "kind": "AttributeName",
+    "value": {
+      "end": 14,
+      "start": 9,
+      "text": "value",
+    },
+  },
+  {
+    "kind": "Equal",
+    "value": {
+      "end": 15,
+      "start": 14,
+      "text": "=",
+    },
+  },
+  {
+    "kind": "Quote",
+    "value": {
+      "end": 16,
+      "start": 15,
+      "text": """,
+    },
+  },
+  {
+    "kind": "StringLiteral",
+    "value": {
+      "end": 27,
+      "start": 16,
+      "text": "Hello world",
+    },
+  },
+  {
+    "kind": "Quote",
+    "value": {
+      "end": 28,
+      "start": 27,
+      "text": """,
+    },
+  },
+  {
+    "kind": "Whitespace",
+    "value": {
+      "end": 29,
+      "start": 28,
+      "text": " ",
+    },
+  },
+  {
+    "kind": "Slash",
+    "value": {
+      "end": 30,
+      "start": 29,
+      "text": "/",
+    },
+  },
+  {
+    "kind": "GreaterThan",
+    "value": {
+      "end": 31,
+      "start": 30,
+      "text": ">",
+    },
+  },
+  {
+    "kind": "EOF",
+    "value": {
+      "end": 31,
+      "start": 31,
+      "text": "",
+    },
+  },
+]
+`;
+
+exports[`tokenizer > should tokenize interpolation with 42 value 1`] = `
+[
+  {
+    "kind": "LessThan",
+    "value": {
+      "end": 1,
+      "start": 0,
+      "text": "<",
+    },
+  },
+  {
+    "kind": "TagName",
+    "value": {
+      "end": 8,
+      "start": 1,
+      "text": "SomeTag",
+    },
+  },
+  {
+    "kind": "Whitespace",
+    "value": {
+      "end": 9,
+      "start": 8,
+      "text": " ",
+    },
+  },
+  {
+    "kind": "AttributeName",
+    "value": {
+      "end": 14,
+      "start": 9,
+      "text": "value",
+    },
+  },
+  {
+    "kind": "Equal",
+    "value": {
+      "end": 15,
+      "start": 14,
+      "text": "=",
+    },
+  },
+  {
+    "kind": "NumberLiteral",
+    "value": {
+      "end": 17,
+      "start": 15,
+      "text": "42",
+    },
+  },
+  {
+    "kind": "Whitespace",
+    "value": {
+      "end": 18,
+      "start": 17,
+      "text": " ",
+    },
+  },
+  {
+    "kind": "Slash",
+    "value": {
+      "end": 19,
+      "start": 18,
+      "text": "/",
+    },
+  },
+  {
+    "kind": "GreaterThan",
+    "value": {
+      "end": 20,
+      "start": 19,
+      "text": ">",
+    },
+  },
+  {
+    "kind": "EOF",
+    "value": {
+      "end": 20,
+      "start": 20,
+      "text": "",
+    },
+  },
+]
+`;
+
+exports[`tokenizer > should tokenize interpolation with 123.456 value 1`] = `
+[
+  {
+    "kind": "LessThan",
+    "value": {
+      "end": 1,
+      "start": 0,
+      "text": "<",
+    },
+  },
+  {
+    "kind": "TagName",
+    "value": {
+      "end": 8,
+      "start": 1,
+      "text": "SomeTag",
+    },
+  },
+  {
+    "kind": "Whitespace",
+    "value": {
+      "end": 9,
+      "start": 8,
+      "text": " ",
+    },
+  },
+  {
+    "kind": "AttributeName",
+    "value": {
+      "end": 14,
+      "start": 9,
+      "text": "value",
+    },
+  },
+  {
+    "kind": "Equal",
+    "value": {
+      "end": 15,
+      "start": 14,
+      "text": "=",
+    },
+  },
+  {
+    "kind": "NumberLiteral",
+    "value": {
+      "end": 22,
+      "start": 15,
+      "text": "123.456",
+    },
+  },
+  {
+    "kind": "Whitespace",
+    "value": {
+      "end": 23,
+      "start": 22,
+      "text": " ",
+    },
+  },
+  {
+    "kind": "Slash",
+    "value": {
+      "end": 24,
+      "start": 23,
+      "text": "/",
+    },
+  },
+  {
+    "kind": "GreaterThan",
+    "value": {
+      "end": 25,
+      "start": 24,
+      "text": ">",
+    },
+  },
+  {
+    "kind": "EOF",
+    "value": {
+      "end": 25,
+      "start": 25,
+      "text": "",
+    },
+  },
+]
+`;
+
+exports[`tokenizer > should tokenize interpolation with false value 1`] = `
+[
+  {
+    "kind": "LessThan",
+    "value": {
+      "end": 1,
+      "start": 0,
+      "text": "<",
+    },
+  },
+  {
+    "kind": "TagName",
+    "value": {
+      "end": 8,
+      "start": 1,
+      "text": "SomeTag",
+    },
+  },
+  {
+    "kind": "Whitespace",
+    "value": {
+      "end": 9,
+      "start": 8,
+      "text": " ",
+    },
+  },
+  {
+    "kind": "AttributeName",
+    "value": {
+      "end": 14,
+      "start": 9,
+      "text": "value",
+    },
+  },
+  {
+    "kind": "Equal",
+    "value": {
+      "end": 15,
+      "start": 14,
+      "text": "=",
+    },
+  },
+  {
+    "kind": "BooleanLiteral",
+    "value": {
+      "end": 20,
+      "start": 15,
+      "text": "false",
+    },
+  },
+  {
+    "kind": "Whitespace",
+    "value": {
+      "end": 21,
+      "start": 20,
+      "text": " ",
+    },
+  },
+  {
+    "kind": "Slash",
+    "value": {
+      "end": 22,
+      "start": 21,
+      "text": "/",
+    },
+  },
+  {
+    "kind": "GreaterThan",
+    "value": {
+      "end": 23,
+      "start": 22,
+      "text": ">",
+    },
+  },
+  {
+    "kind": "EOF",
+    "value": {
+      "end": 23,
+      "start": 23,
+      "text": "",
+    },
+  },
+]
+`;
+
+exports[`tokenizer > should tokenize interpolation with true value 1`] = `
+[
+  {
+    "kind": "LessThan",
+    "value": {
+      "end": 1,
+      "start": 0,
+      "text": "<",
+    },
+  },
+  {
+    "kind": "TagName",
+    "value": {
+      "end": 8,
+      "start": 1,
+      "text": "SomeTag",
+    },
+  },
+  {
+    "kind": "Whitespace",
+    "value": {
+      "end": 9,
+      "start": 8,
+      "text": " ",
+    },
+  },
+  {
+    "kind": "AttributeName",
+    "value": {
+      "end": 14,
+      "start": 9,
+      "text": "value",
+    },
+  },
+  {
+    "kind": "Equal",
+    "value": {
+      "end": 15,
+      "start": 14,
+      "text": "=",
+    },
+  },
+  {
+    "kind": "BooleanLiteral",
+    "value": {
+      "end": 19,
+      "start": 15,
+      "text": "true",
+    },
+  },
+  {
+    "kind": "Whitespace",
+    "value": {
+      "end": 20,
+      "start": 19,
+      "text": " ",
+    },
+  },
+  {
+    "kind": "Slash",
+    "value": {
+      "end": 21,
+      "start": 20,
+      "text": "/",
+    },
+  },
+  {
+    "kind": "GreaterThan",
+    "value": {
+      "end": 22,
+      "start": 21,
+      "text": ">",
+    },
+  },
+  {
+    "kind": "EOF",
+    "value": {
+      "end": 22,
+      "start": 22,
+      "text": "",
+    },
+  },
+]
+`;
+
+exports[`tokenizer > should tokenize nested tags 1`] = `
+[
+  {
+    "kind": "Whitespace",
+    "value": {
+      "end": 7,
+      "start": 0,
+      "text": "
+      ",
+    },
+  },
+  {
+    "kind": "LessThan",
+    "value": {
+      "end": 8,
+      "start": 7,
+      "text": "<",
+    },
+  },
+  {
+    "kind": "TagName",
+    "value": {
+      "end": 13,
+      "start": 8,
+      "text": "Modal",
+    },
+  },
+  {
+    "kind": "Whitespace",
+    "value": {
+      "end": 14,
+      "start": 13,
+      "text": " ",
+    },
+  },
+  {
+    "kind": "AttributeName",
+    "value": {
+      "end": 19,
+      "start": 14,
+      "text": "title",
+    },
+  },
+  {
+    "kind": "Equal",
+    "value": {
+      "end": 20,
+      "start": 19,
+      "text": "=",
+    },
+  },
+  {
+    "kind": "Quote",
+    "value": {
+      "end": 21,
+      "start": 20,
+      "text": """,
+    },
+  },
+  {
+    "kind": "StringLiteral",
+    "value": {
+      "end": 29,
+      "start": 21,
+      "text": "Greeting",
+    },
+  },
+  {
+    "kind": "Quote",
+    "value": {
+      "end": 30,
+      "start": 29,
+      "text": """,
+    },
+  },
+  {
+    "kind": "GreaterThan",
+    "value": {
+      "end": 31,
+      "start": 30,
+      "text": ">",
+    },
+  },
+  {
+    "kind": "Text",
+    "value": {
+      "end": 40,
+      "start": 31,
+      "text": "
+        ",
+    },
+  },
+  {
+    "kind": "LessThan",
+    "value": {
+      "end": 41,
+      "start": 40,
+      "text": "<",
+    },
+  },
+  {
+    "kind": "TagName",
+    "value": {
+      "end": 48,
+      "start": 41,
+      "text": ".header",
+    },
+  },
+  {
+    "kind": "GreaterThan",
+    "value": {
+      "end": 49,
+      "start": 48,
+      "text": ">",
+    },
+  },
+  {
+    "kind": "Text",
+    "value": {
+      "end": 56,
+      "start": 49,
+      "text": "Welcome",
+    },
+  },
+  {
+    "kind": "LessThan",
+    "value": {
+      "end": 57,
+      "start": 56,
+      "text": "<",
+    },
+  },
+  {
+    "kind": "Slash",
+    "value": {
+      "end": 58,
+      "start": 57,
+      "text": "/",
+    },
+  },
+  {
+    "kind": "GreaterThan",
+    "value": {
+      "end": 59,
+      "start": 58,
+      "text": ">",
+    },
+  },
+  {
+    "kind": "Whitespace",
+    "value": {
+      "end": 68,
+      "start": 59,
+      "text": "
+        ",
+    },
+  },
+  {
+    "kind": "LessThan",
+    "value": {
+      "end": 69,
+      "start": 68,
+      "text": "<",
+    },
+  },
+  {
+    "kind": "TagName",
+    "value": {
+      "end": 77,
+      "start": 69,
+      "text": ".content",
+    },
+  },
+  {
+    "kind": "GreaterThan",
+    "value": {
+      "end": 78,
+      "start": 77,
+      "text": ">",
+    },
+  },
+  {
+    "kind": "Text",
+    "value": {
+      "end": 89,
+      "start": 78,
+      "text": "
+          ",
+    },
+  },
+  {
+    "kind": "LessThan",
+    "value": {
+      "end": 90,
+      "start": 89,
+      "text": "<",
+    },
+  },
+  {
+    "kind": "TagName",
+    "value": {
+      "end": 95,
+      "start": 90,
+      "text": "Label",
+    },
+  },
+  {
+    "kind": "GreaterThan",
+    "value": {
+      "end": 96,
+      "start": 95,
+      "text": ">",
+    },
+  },
+  {
+    "kind": "Text",
+    "value": {
+      "end": 112,
+      "start": 96,
+      "text": "Enter your name:",
+    },
+  },
+  {
+    "kind": "LessThan",
+    "value": {
+      "end": 113,
+      "start": 112,
+      "text": "<",
+    },
+  },
+  {
+    "kind": "Slash",
+    "value": {
+      "end": 114,
+      "start": 113,
+      "text": "/",
+    },
+  },
+  {
+    "kind": "GreaterThan",
+    "value": {
+      "end": 115,
+      "start": 114,
+      "text": ">",
+    },
+  },
+  {
+    "kind": "Whitespace",
+    "value": {
+      "end": 126,
+      "start": 115,
+      "text": "
+          ",
+    },
+  },
+  {
+    "kind": "LessThan",
+    "value": {
+      "end": 127,
+      "start": 126,
+      "text": "<",
+    },
+  },
+  {
+    "kind": "TagName",
+    "value": {
+      "end": 136,
+      "start": 127,
+      "text": "TextField",
+    },
+  },
+  {
+    "kind": "Whitespace",
+    "value": {
+      "end": 137,
+      "start": 136,
+      "text": " ",
+    },
+  },
+  {
+    "kind": "AttributeName",
+    "value": {
+      "end": 141,
+      "start": 137,
+      "text": "name",
+    },
+  },
+  {
+    "kind": "Equal",
+    "value": {
+      "end": 142,
+      "start": 141,
+      "text": "=",
+    },
+  },
+  {
+    "kind": "Quote",
+    "value": {
+      "end": 143,
+      "start": 142,
+      "text": """,
+    },
+  },
+  {
+    "kind": "StringLiteral",
+    "value": {
+      "end": 150,
+      "start": 143,
+      "text": "txtName",
+    },
+  },
+  {
+    "kind": "Quote",
+    "value": {
+      "end": 151,
+      "start": 150,
+      "text": """,
+    },
+  },
+  {
+    "kind": "Whitespace",
+    "value": {
+      "end": 152,
+      "start": 151,
+      "text": " ",
+    },
+  },
+  {
+    "kind": "AttributeName",
+    "value": {
+      "end": 161,
+      "start": 152,
+      "text": "maxLength",
+    },
+  },
+  {
+    "kind": "Equal",
+    "value": {
+      "end": 162,
+      "start": 161,
+      "text": "=",
+    },
+  },
+  {
+    "kind": "NumberLiteral",
+    "value": {
+      "end": 165,
+      "start": 162,
+      "text": "100",
+    },
+  },
+  {
+    "kind": "Whitespace",
+    "value": {
+      "end": 166,
+      "start": 165,
+      "text": " ",
+    },
+  },
+  {
+    "kind": "Slash",
+    "value": {
+      "end": 167,
+      "start": 166,
+      "text": "/",
+    },
+  },
+  {
+    "kind": "GreaterThan",
+    "value": {
+      "end": 168,
+      "start": 167,
+      "text": ">",
+    },
+  },
+  {
+    "kind": "Whitespace",
+    "value": {
+      "end": 179,
+      "start": 168,
+      "text": "
+          ",
+    },
+  },
+  {
+    "kind": "LessThan",
+    "value": {
+      "end": 180,
+      "start": 179,
+      "text": "<",
+    },
+  },
+  {
+    "kind": "TagName",
+    "value": {
+      "end": 186,
+      "start": 180,
+      "text": "Button",
+    },
+  },
+  {
+    "kind": "Whitespace",
+    "value": {
+      "end": 187,
+      "start": 186,
+      "text": " ",
+    },
+  },
+  {
+    "kind": "AttributeName",
+    "value": {
+      "end": 191,
+      "start": 187,
+      "text": "name",
+    },
+  },
+  {
+    "kind": "Equal",
+    "value": {
+      "end": 192,
+      "start": 191,
+      "text": "=",
+    },
+  },
+  {
+    "kind": "Quote",
+    "value": {
+      "end": 193,
+      "start": 192,
+      "text": """,
+    },
+  },
+  {
+    "kind": "StringLiteral",
+    "value": {
+      "end": 202,
+      "start": 193,
+      "text": "btnSubmit",
+    },
+  },
+  {
+    "kind": "Quote",
+    "value": {
+      "end": 203,
+      "start": 202,
+      "text": """,
+    },
+  },
+  {
+    "kind": "Whitespace",
+    "value": {
+      "end": 204,
+      "start": 203,
+      "text": " ",
+    },
+  },
+  {
+    "kind": "AttributeName",
+    "value": {
+      "end": 212,
+      "start": 204,
+      "text": "disabled",
+    },
+  },
+  {
+    "kind": "GreaterThan",
+    "value": {
+      "end": 213,
+      "start": 212,
+      "text": ">",
+    },
+  },
+  {
+    "kind": "Text",
+    "value": {
+      "end": 219,
+      "start": 213,
+      "text": "Submit",
+    },
+  },
+  {
+    "kind": "LessThan",
+    "value": {
+      "end": 220,
+      "start": 219,
+      "text": "<",
+    },
+  },
+  {
+    "kind": "Slash",
+    "value": {
+      "end": 221,
+      "start": 220,
+      "text": "/",
+    },
+  },
+  {
+    "kind": "GreaterThan",
+    "value": {
+      "end": 222,
+      "start": 221,
+      "text": ">",
+    },
+  },
+  {
+    "kind": "Whitespace",
+    "value": {
+      "end": 231,
+      "start": 222,
+      "text": "
+        ",
+    },
+  },
+  {
+    "kind": "LessThan",
+    "value": {
+      "end": 232,
+      "start": 231,
+      "text": "<",
+    },
+  },
+  {
+    "kind": "Slash",
+    "value": {
+      "end": 233,
+      "start": 232,
+      "text": "/",
+    },
+  },
+  {
+    "kind": "GreaterThan",
+    "value": {
+      "end": 234,
+      "start": 233,
+      "text": ">",
+    },
+  },
+  {
+    "kind": "Whitespace",
+    "value": {
+      "end": 241,
+      "start": 234,
+      "text": "
+      ",
+    },
+  },
+  {
+    "kind": "LessThan",
+    "value": {
+      "end": 242,
+      "start": 241,
+      "text": "<",
+    },
+  },
+  {
+    "kind": "Slash",
+    "value": {
+      "end": 243,
+      "start": 242,
+      "text": "/",
+    },
+  },
+  {
+    "kind": "GreaterThan",
+    "value": {
+      "end": 244,
+      "start": 243,
+      "text": ">",
+    },
+  },
+  {
+    "kind": "Whitespace",
+    "value": {
+      "end": 249,
+      "start": 244,
+      "text": "
+    ",
+    },
+  },
+  {
+    "kind": "EOF",
+    "value": {
+      "end": 249,
+      "start": 249,
+      "text": "",
+    },
+  },
+]
+`;
