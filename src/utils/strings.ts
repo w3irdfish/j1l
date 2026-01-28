@@ -53,6 +53,11 @@ export function isBoolean(str: string): boolean {
   return str === "true" || str === "false";
 }
 
+/**
+ * Ensures that the input string is a single character.
+ * @param char The string to check.
+ * @throws Error if the input string is not a single character.
+ */
 function ensureSingleChar(char: string): void {
   if (char.length !== 1) {
     throw new Error("Function accepts a single character only");

@@ -65,24 +65,6 @@ export function isRight<L, R>(either: Either<L, R>): either is Right<L, R> {
 }
 
 /**
- * Matches on an Either value and executes the corresponding callback.
- * @param either The Either value to match on.
- * @param onLeft The callback to execute if the Either is a Left.
- * @param onRight The callback to execute if the Either is a Right.
- */
-export function match<L, R>(
-  either: Either<L, R>,
-  onLeft: (value: L) => void,
-  onRight: (value: R) => void
-): void {
-  if (isLeft(either)) {
-    onLeft(either.value);
-  } else if (isRight(either)) {
-    onRight(either.value);
-  }
-}
-
-/**
  * Unwraps the Left value from an Either.
  * @param either The Either to unwrap.
  * @returns The Left value.
@@ -125,16 +107,4 @@ export function unwrapAll<L, R>(results: Iterable<Either<L, R>>): R[] {
     rights.push(unwrapRight(result));
   }
   return rights;
-}
-
-/**
- * Yields the Either result, and if it's a Left, returns immediately.
- * @param result The Either result to yield or return from.
- * @returns A generator yielding the Either result.
- */
-export function* yieldOrReturn<L, R>(
-  result: Either<L, R>
-): Generator<Either<L, R>> {
-  yield result;
-  if (isLeft(result)) return;
 }

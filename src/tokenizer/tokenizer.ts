@@ -4,6 +4,7 @@ import {
   StringError,
   Token,
   SourceCode,
+  concatSpans,
 } from "@/tokenizer";
 import { Either, isNum, left, right } from "@/utils";
 
@@ -17,16 +18,15 @@ export type Scanner = Generator<Either<StringError, Token>>;
  * @param source The source code to tokenize.
  * @returns A generator yielding tokens or errors.
  */
-export function* scanSource(source: string): Scanner {
+export function* scan(source: string): Scanner {
   const src = new SourceCode(source);
 
   while (!src.isEOF()) {
-    const char = src.peek();
+    yield* scanTrivia(src);
 
-    const whitespace = src.eatWhitespace();
-    if (whitespace) {
-      yield right(createToken("Whitespace", whitespace));
-      continue;
+    const char = src.peek();
+    if (char === "") {
+      break;
     }
 
     if (char === "<") {
@@ -34,154 +34,194 @@ export function* scanSource(source: string): Scanner {
       continue;
     }
 
-    yield left(`Unexpected character '${char}' at position ${src.position}.`);
+    yield left(src.formatError(`Unexpected character '${char}'`));
     return;
   }
 
+  yield* scanTrivia(src);
+
   // Emit EOF token
-  yield right(createToken("EOF", createSpan("", src.position, src.position)));
+  yield right(createToken("EOF", createSpan("", src.position)));
+
+  return;
 }
 
 /**
  * Scans a tag from the source code.
- * @param source The source code to scan from.
+ * @param src The source code to scan from.
  * @returns A generator yielding tokens or errors.
  */
-function* scanTag(source: SourceCode): Scanner {
-  yield right(createToken("LessThan", source.eatExactly("<")));
+function* scanTag(src: SourceCode): Scanner {
+  yield right(createToken("LessThan", src.eatExactly("<")));
 
-  const leadingSlash = source.eatIf("/");
+  const leadingSlash = src.eatIf("/");
   if (leadingSlash) {
     yield right(createToken("Slash", leadingSlash));
   }
 
-  const identifier = source.eatIdentifier();
-  if (identifier) {
-    yield right(createToken("TagName", identifier));
+  yield* scanTagName(src);
+
+  if (!leadingSlash) {
+    yield* scanAttributes(src);
   }
 
-  yield* scanAttributes(source);
-
-  const trailingSlash = source.eatIf("/");
+  const trailingSlash = src.eatIf("/");
   if (trailingSlash) {
     yield right(createToken("Slash", trailingSlash));
   }
+  if (leadingSlash && trailingSlash) {
+    yield left(src.formatError("A closing tag cannot be self-closing"));
+  }
 
-  if (source.peek() !== ">") {
-    yield left(`Missing closing '>' for tag.`);
+  const greaterThan = src.eatIf(">");
+  if (!greaterThan) {
+    yield left(src.formatError("Expected '>' at the end of the tag"));
     return;
   }
-  yield right(createToken("GreaterThan", source.eatExactly(">")));
+  yield right(createToken("GreaterThan", greaterThan));
 
   // If it's not a self-closing tag, scan children
   if (!leadingSlash && !trailingSlash) {
-    yield* scanChildren(source);
+    yield* scanChildren(src);
   }
 }
 
 /**
  * Scans attributes from the source code.
- * @param source The source code to scan from.
+ * @param src The source code to scan from.
  * @returns A generator yielding tokens or errors.
  */
-function* scanAttributes(
-  source: SourceCode
-): Generator<Either<StringError, Token>> {
-  while (!source.isEOF()) {
-    const whitespace = source.eatWhitespace();
-    if (whitespace) {
-      yield right(createToken("Whitespace", whitespace));
-    }
+function* scanAttributes(src: SourceCode): Scanner {
+  while (!src.isEOF()) {
+    yield* scanTrivia(src);
 
-    const char = source.peek();
-    if (char === null || char === ">" || char === "/") {
+    const char = src.peek();
+    if (char === ">" || char === "/") {
       return;
     }
 
-    const name = source.eatIdentifier();
-    if (!name) {
-      yield left(
-        `Expected attribute name at position ${source.position}, found '${char}'.`
-      );
-      return;
-    }
-    yield right(createToken("AttributeName", name));
+    yield* scanAttributeName(src);
+    yield* scanTrivia(src);
 
-    const equalSign = source.eatIf("=");
+    const equalSign = src.eatIf("=");
+    yield* scanTrivia(src);
+
     if (equalSign) {
       yield right(createToken("Equal", equalSign));
-    }
-
-    // If there is no equal sign, we consider it a boolean attribute
-    // and continue scanning the next attribute.
-    if (!equalSign) {
+    } else {
+      // If there is no equal sign, we consider it a boolean attribute
+      // and continue scanning the next attribute.
       continue;
     }
 
-    yield* scanExpression(source);
+    yield* scanExpression(src);
   }
+
+  return;
 }
 
 /**
  * Scans child nodes from the source code.
- * @param source The source code to scan from.
+ * @param src The source code to scan from.
  * @returns A generator yielding tokens or errors.
  */
-function* scanChildren(source: SourceCode): Scanner {
-  const char = source.peek();
-  if (char === null) {
-    return;
-  }
+function* scanChildren(src: SourceCode): Scanner {
+  while (!src.isEOF()) {
+    yield* scanTrivia(src);
 
-  if (char === "<") {
-    yield* scanTag(source);
-    return;
-  }
+    const char = src.peek();
+    if (char === "") {
+      return;
+    }
 
-  const text = source.eatWhile((char) => char !== "<");
-  if (text) {
-    yield right(createToken("Text", text));
+    if (char === "<") {
+      if (src.peek(1) === "/") {
+        return;
+      }
+
+      yield* scanTag(src);
+    }
+
+    const text = src.eatWhile((char) => char !== "<");
+    if (text) {
+      yield right(createToken("Text", text));
+    }
   }
 }
 
 /**
  * Scans an expression from the source code.
- * @param source The source code to scan from.
+ * @param src The source code to scan from.
  * @returns A generator yielding tokens or errors.
  */
-function* scanExpression(source: SourceCode): Scanner {
-  const char = source.peek();
-  if (char === null) {
+function* scanExpression(src: SourceCode): Scanner {
+  if (src.isEOF()) {
+    yield left(src.formatError("Expected an expression, but found EOF"));
     return;
   }
 
-  if (isNum(char)) {
-    const numberLiteral = source.eatNumber();
-    if (numberLiteral) {
-      yield right(createToken("NumberLiteral", numberLiteral));
-      return;
-    }
+  const char = src.peek();
+
+  if (isNum(char) || char === "-" || char === ".") {
+    return yield* scanNumberLiteral(src);
   }
 
   if (char === '"') {
-    yield* scanStringLiteral(source);
+    return yield* scanStringLiteral(src);
+  }
+
+  return yield* scanKeyword(src);
+}
+
+/**
+ * Scans a number literal from the source code.
+ * @param src The source code to scan from.
+ * @returns A generator yielding tokens or errors.
+ */
+function* scanNumberLiteral(src: SourceCode): Scanner {
+  const numberLiteral = src.eatNumber();
+
+  if (!numberLiteral) {
+    yield left(src.formatError("Invalid number literal"));
     return;
   }
 
-  yield* scanKeyword(source);
+  yield right(createToken("NumberLiteral", numberLiteral));
+}
+
+/**
+ * Scans a string value from the source code.
+ * @param src The source code to scan from.
+ * @returns A generator yielding tokens or errors.
+ */
+function* scanStringLiteral(src: SourceCode): Scanner {
+  const leadingQuote = src.eatExactly('"');
+  const str = src.eatUntil((char) => char === '"');
+  const trailingQuote = src.eatIf('"');
+
+  if (!trailingQuote) {
+    yield left(
+      src.formatError("Unterminated string literal, missing closing quote")
+    );
+  }
+
+  yield right(
+    createToken(
+      "StringLiteral",
+      createSpan(str?.text ?? "", leadingQuote.start, trailingQuote?.end)
+    )
+  );
 }
 
 /**
  * Scans a keyword or identifier from the source code.
- * @param source The source code to scan from.
+ * @param src The source code to scan from.
  * @returns A generator yielding tokens or errors.
  */
-function* scanKeyword(source: SourceCode): Scanner {
-  const word = source.eatWord();
+function* scanKeyword(src: SourceCode): Scanner {
+  const word = src.eatWord();
   if (!word) {
-    yield left(
-      `Expected identifier or keyword at position ${source.position}.`
-    );
+    yield left(src.formatError("Expected identifier"));
     return;
   }
 
@@ -191,31 +231,124 @@ function* scanKeyword(source: SourceCode): Scanner {
       yield right(createToken("BooleanLiteral", word));
       break;
     default:
-      yield left(
-        `Unexpected identifier '${word.text}' at position ${word.start}.`
-      );
+      yield left(src.formatError(`Unrecognized keyword '${word.text}'`));
   }
 }
 
 /**
- * Scans a string value from the source code.
- * @param source The source code to scan from.
+ * Scans a tag name from the source code.
+ * @param src The source code to scan from.
  * @returns A generator yielding tokens or errors.
  */
-function* scanStringLiteral(source: SourceCode): Scanner {
-  yield right(createToken("Quote", source.eatExactly('"')));
-
-  const value = source.eatWhile((char) => char !== '"');
-  if (value) {
-    yield right(createToken("StringLiteral", value));
-  }
-
-  const closingQuote = source.eatIf('"');
-  if (!closingQuote) {
-    yield left(
-      `Expected closing '"' for attribute value at position ${source.position}.`
-    );
+function* scanTagName(src: SourceCode): Scanner {
+  // Possible tag name formats:
+  // </>
+  // <.property/>
+  // <prefix:property />
+  // <prefix:target.property />
+  // <prefix:.property />
+  const char = src.peek();
+  if (char === "" || char === ">" || char === "/") {
     return;
   }
-  yield right(createToken("Quote", closingQuote));
+
+  yield* scanTrivia(src);
+
+  // Shorthand access allows accessing properties from parent object without
+  // repeating the parent name. e.g., <.name />
+  const shorthandAccess = src.eatIf(".");
+  if (shorthandAccess) {
+    yield right(createToken("Dot", shorthandAccess));
+  }
+
+  const atSign = src.eatIf("@");
+  if (atSign) {
+    yield right(createToken("AtSign", atSign));
+  }
+
+  const nameOrPrefix = src.eatName();
+  if (nameOrPrefix) {
+    yield right(createToken("Name", nameOrPrefix));
+  }
+
+  // if there is a colon, the previous part should be considered a prefix and
+  // cannot be started with a '.'. (e.g., <prefix:name />)
+  const colon = src.eatIf(":");
+  if (colon) {
+    yield right(createToken("Colon", colon));
+  } else {
+    return; // No more parts to scan
+  }
+
+  const target = src.eatName();
+  if (target) {
+    yield right(createToken("Name", target));
+  }
+
+  const memberAccess = src.eatIf(".");
+  if (memberAccess) {
+    yield right(createToken("Dot", memberAccess));
+  } else {
+    return; // No more parts to scan
+  }
+
+  const property = src.eatName();
+  if (!property) {
+    yield left(src.formatError("Expected property name after '.'"));
+    return;
+  }
+  yield right(createToken("Name", property));
+}
+
+/**
+ * Scans an attribute name from the source code.
+ * @param src The source code to scan from.
+ * @returns A generator yielding tokens or errors.
+ */
+function* scanAttributeName(src: SourceCode): Scanner {
+  const prefixOrName = src.eatName();
+  if (!prefixOrName) {
+    yield left(src.formatError("Expected attribute name"));
+    return;
+  }
+
+  const colon = src.eatIf(":");
+  if (colon) {
+    yield right(createToken("Name", prefixOrName));
+    yield right(createToken("Colon", colon));
+  }
+
+  const name = src.eatName();
+  if (colon && !name) {
+    yield left(src.formatError("Expected attribute name"));
+    return;
+  }
+
+  if (name) {
+    yield right(createToken("Name", name));
+  }
+}
+
+/**
+ * Scans trivia (whitespace and comments) from the source code.
+ * @param src The source code to scan from.
+ * @returns A generator yielding tokens or errors.
+ */
+function* scanTrivia(src: SourceCode): Scanner {
+  while (!src.isEOF()) {
+    const whitespace = src.eatWhitespace();
+    if (whitespace) {
+      yield right(createToken("Whitespace", whitespace));
+      continue;
+    }
+
+    const hash = src.eatIf("#");
+    if (hash) {
+      const comment = src.eatWhile((char) => char !== "\n");
+      yield right(createToken("Comment", concatSpans(hash, comment)));
+      continue;
+    }
+
+    return;
+  }
 }

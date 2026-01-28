@@ -1,14 +1,14 @@
 import { isAlphaNum, isNum, isWhitespace } from "@/utils";
-import { Span } from "./types";
+import { createSpan, Span, Location, concatSpans } from "./types";
 
 /**
  * A class representing a source code.
  */
 export class SourceCode {
   /**
-   * The current position of the head in the source code.
+   * The current head position in the source code.
    */
-  private head: number = 0;
+  private head: Location = { offset: 0, line: 1, column: 1 };
 
   /**
    * Creates a new SourceCode instance.
@@ -26,7 +26,7 @@ export class SourceCode {
   /**
    * The current position of the head in the source code.
    */
-  get position(): number {
+  get position(): Readonly<Location> {
     return this.head;
   }
 
@@ -35,7 +35,7 @@ export class SourceCode {
    * @returns True if the end of the source code has been reached, false otherwise.
    */
   isEOF(): boolean {
-    return this.head >= this.code.length;
+    return this.head.offset >= this.code.length;
   }
 
   /**
@@ -44,9 +44,10 @@ export class SourceCode {
    * @param count The number of characters to peek.
    * @returns The peeked character(s) or null if the end of the source code is reached.
    */
-  peek(delta: number = 0, count: number = 1): string | null {
-    return (
-      this.code.substring(this.head + delta, this.head + delta + count) ?? null
+  peek(delta: number = 0, count = 1): string {
+    return this.code.substring(
+      this.head.offset + delta,
+      this.head.offset + delta + count
     );
   }
 
@@ -56,23 +57,29 @@ export class SourceCode {
    * @returns The span of the eaten character(s).
    */
   eat(count: number = 1): Span {
-    const start = this.head;
-    const str = this.code.substring(start, start + count);
+    const start = { ...this.head };
 
-    this.head += count;
+    const str = this.code.substring(start.offset, start.offset + count);
 
     // Throwing an error if we couldn't eat the expected number of characters.
-    // In fact it indicates a bug in the tokenizer like not having a proper
+    // In fact, it indicates a bug in the tokenizer like not having a proper
     // EOF check before eating.
     if (str.length !== count) {
       throw new Error("Unexpected end of source code");
     }
 
-    return {
-      text: str,
-      start,
-      end: this.head,
-    };
+    // Update offset, line, and column based on consumed characters
+    for (let i = 0; i < str.length; i++) {
+      this.head.offset++;
+      if (str[i] === "\n") {
+        this.head.line++;
+        this.head.column = 1;
+      } else {
+        this.head.column++;
+      }
+    }
+
+    return createSpan(str, start, this.head);
   }
 
   /**
@@ -81,12 +88,28 @@ export class SourceCode {
    * @returns The span of the eaten characters or null if no characters were eaten.
    */
   eatWhile(condition: (char: string) => boolean): Span | null {
+    return this.eatUntil((char) => !condition(char));
+  }
+
+  /**
+   * Eats characters until the given condition is met.
+   * @param condition The condition to be met for stopping the eating process.
+   * @returns The span of the eaten characters or null if no characters were eaten.
+   */
+  eatUntil(condition: (char: string) => boolean): Span | null {
     let count = 0;
     while (true) {
       const char = this.peek(count);
-      if (char === null || !condition(char)) {
+
+      if (char === "\\") {
+        count += 2;
+        continue;
+      }
+
+      if (char === "" || condition(char)) {
         break;
       }
+
       count++;
     }
 
@@ -146,25 +169,39 @@ export class SourceCode {
   }
 
   /**
-   * Eats an identifier from the source code.
-   * @returns The span of the eaten identifier or null if no identifier was eaten.
-   */
-  eatIdentifier(): Span | null {
-    return this.eatWhile(
-      (char) =>
-        char === "_" ||
-        char === "-" ||
-        char === "." ||
-        char === ":" ||
-        isAlphaNum(char)
-    );
-  }
-
-  /**
    * Eats a number literal from the source code.
    * @returns The span of the eaten number literal or null if no number literal was eaten.
    */
   eatNumber(): Span | null {
-    return this.eatWhile((n) => isNum(n) || n === ".");
+    const negativeSign = this.eatIf("-");
+    const integerPart = this.eatWhile(isNum);
+    const decimalPoint = this.eatIf(".");
+    const fractionalPart = this.eatWhile(isNum);
+
+    if (!integerPart && !fractionalPart) {
+      // No digits were found
+      return null;
+    }
+
+    return concatSpans(negativeSign, integerPart, decimalPoint, fractionalPart);
+  }
+
+  /**
+   * Eats a name (Prefix, TagName or AttributeName) from the source code.
+   * @returns The span of the eaten name or null if no name was eaten.
+   */
+  eatName(): Span | null {
+    return this.eatWhile(
+      (char) => char === "_" || char === "-" || isAlphaNum(char)
+    );
+  }
+
+  /**
+   * Formats an error message with position information.
+   * @param error The error message.
+   * @returns The formatted error message.
+   */
+  formatError(error: string): string {
+    return `${error} (${this.head.line}, ${this.head.column})`;
   }
 }
